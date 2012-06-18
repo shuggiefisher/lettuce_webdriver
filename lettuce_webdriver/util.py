@@ -1,6 +1,4 @@
 """Utility functions that combine steps to locate elements"""
-from nose.tools import assert_true as nose_assert_true
-from nose.tools import assert_false as nose_assert_false
 
 class AssertContextManager():
     def __init__(self, step):
@@ -21,11 +19,13 @@ class AssertContextManager():
 
 def assert_true(step, exp):
     with AssertContextManager(step):
-        nose_assert_true(exp)
+        if not exp:
+            raise AssertionError
 
 def assert_false(step, exp, msg=None):
     with AssertContextManager(step):
-        nose_assert_false(exp, msg)
+        if exp:
+            raise AssertionError
 
 def element_id_by_label(browser, label):
     """Return the id of a label's for attribute"""
